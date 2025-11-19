@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Manthan Bhatt App</string>
+    <string name="raise_to_listen">Raise to Listen</string>
+    <string name="play_audio">Play Audio</string>
+    <string name="stop_audio">Stop Audio</string>
+    <string name="audio_playing">Audio Playing: %1$s</string>
+    <string name="speaker_mode">Speaker Mode</string>
+    <string name="earpiece_mode">Earpiece Mode</string>
+    <string name="recording">Recording</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="stop_recording">Stop Recording</string>
+    <string name="night_mode_schedule">Night Mode Schedule</string>
+    <string name="enable_night_mode">Enable Night Mode</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="permission_record_audio_required">Microphone permission is required for recording</string>
+    <string name="proximity_sensor_not_available">Proximity sensor not available</string>
+</resources>
