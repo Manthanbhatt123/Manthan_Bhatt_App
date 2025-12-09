@@ -1,6 +1,9 @@
 package com.example.capermintpractical.presentation.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -14,6 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.activity.result.contract.ActivityResultContracts.TakePicturePreview
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -28,13 +33,25 @@ import com.bumptech.glide.request.target.Target
 import com.example.capermintpractical.NightModeManager
 import com.example.capermintpractical.R
 import com.example.capermintpractical.databinding.ActivityMainBinding
+import com.example.capermintpractical.model.Events
 import com.example.capermintpractical.presentation.DynamicNanoHttpD.DynamicNanoHttpD
+import com.example.capermintpractical.presentation.utility.AudioRecorderHelper
+import com.example.capermintpractical.presentation.utility.Config
+import com.example.capermintpractical.presentation.utility.RECORDING_PAUSED
+import com.example.capermintpractical.presentation.utility.RECORDING_RUNNING
+import com.example.capermintpractical.presentation.utility.RECORDING_STOPPED
 import com.example.capermintpractical.presentation.utility.setSafeOnClickListener
+import com.example.capermintpractical.services.RecorderService
+import org.greenrobot.eventbus.Subscribe
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
+    private var status = RECORDING_STOPPED
+    private lateinit var config: Config
+
+    private lateinit var recorderHelper: AudioRecorderHelper
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
         if (uri != null) {
@@ -72,23 +89,74 @@ class MainActivity : AppCompatActivity() {
 
         setupObservers()
         setupListeners()
-        NightModeManager.applyNightMode(this)
+//        NightModeManager.applyNightMode(this)
 //        setUpGIF(1)
-//        setupGifLoopCount()
-        setupAnimationGIF(2)
+        setupGifLoopCount()
 
-    }
-    fun openInternalActivity(pkg: String, activity: String) {
-        val intent = Intent().apply {
-            setClassName(pkg, activity)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        recorderHelper = AudioRecorderHelper(binding.recorderVisualizer)
+        setupAnimationGIF()
+        config = Config(this)
+        if (config.recordAfterLaunch && !RecorderService.isRunning) {
+            Intent(this@MainActivity, RecorderService::class.java).apply {
+                try {
+                    startService(this)
+                } catch (e: Exception) {
+                    Log.e("RecorderService", "onCreate:${e.message.toString()}  \n${e.printStackTrace()}",e )
+                }
+            }
         }
-        try {
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Activity not accessible", Toast.LENGTH_SHORT).show()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateNightModeStatus()
+
+
+        setupColors()
+        if (!RecorderService.isRunning) {
+            status = RECORDING_STOPPED
+        }
+        binding.recorderVisualizer.recreate()
+
+        refreshView()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.stopAudio()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 200 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            start()
+        } else {
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun setupColors() {
+        binding.recorderVisualizer.chunkColor = Color.GREEN
+    }
+
+    private fun refreshView() {
+
+        when (status) {
+            RECORDING_PAUSED -> {
+            }
+
+            RECORDING_RUNNING -> {
+
+            }
+
+            else -> {
+                binding.recorderVisualizer.recreate()
+            }
+        }
+    }
+
     private fun setupObservers() {
         viewModel.audioStatus.observe(this) { status ->
             binding.tvAudioStatus.text = status
@@ -112,7 +180,18 @@ class MainActivity : AppCompatActivity() {
             binding.tvNightModeStatus.text = status
         }
     }
-
+    fun openInternalActivity(pkg: String, activity: String) {
+        val intent = Intent().apply {
+            setClassName(pkg, activity)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("OpenInternalActivity", "openInternalActivity:${e.message.toString()} \n${e.printStackTrace()} ",e )
+            Toast.makeText(this, "Activity not accessible", Toast.LENGTH_SHORT).show()
+        }
+    }
     private fun setupListeners() {
         binding.btnPlayAudio.setSafeOnClickListener {
             viewModel.playAudio()
@@ -150,6 +229,63 @@ class MainActivity : AppCompatActivity() {
             pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
 
         }
+        
+        binding.recorderVisualizer.setSafeOnClickListener {
+            if (checkPermission()) {
+                if (recorderHelper.isRecording()) {
+                    if (recorderHelper.isPaused()) {
+                        resume()
+                    } else {
+                        pause()
+                    }
+                } else {
+                    start()
+                }
+            } else {
+                requestPermission()
+            }
+        }
+        
+        binding.recorderVisualizer.setOnLongClickListener {
+            if (recorderHelper.isRecording()) {
+                stop()
+            }
+            true
+        }
+    }
+
+    private fun start() {
+        recorderHelper.startRecording()
+        Toast.makeText(this, "Recording Started", Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun pause() {
+        recorderHelper.pauseRecording()
+        Toast.makeText(this, "Recording Paused", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun resume() {
+        recorderHelper.resumeRecording()
+        Toast.makeText(this, "Recording Resumed", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun stop() {
+        recorderHelper.stopRecording()
+        Toast.makeText(this, "Recording Stopped", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this, 
+            arrayOf(Manifest.permission.RECORD_AUDIO),
+            200
+        )
     }
 
     private fun setupNightModeSwitch() {
@@ -206,14 +342,14 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Invalid number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            Log.e("LoopCount", "setupGifLoopCount: $loopCount", )
+            Log.e("LoopCount", "setupGifLoopCount: $loopCount")
             setUpGIF(loopCount)
         }
 
     }
 
     private fun setUpGIF(loopCount: Int) {
-        Log.e("LoopCount===", "setupGifLoopCount: $loopCount", )
+        Log.e("LoopCount===", "setupGifLoopCount: $loopCount")
 
         Glide.with(this)
             .asGif()
@@ -238,7 +374,7 @@ class MainActivity : AppCompatActivity() {
                     dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.e("LoopCount++++", "setupGifLoopCount: $loopCount", )
+                    Log.e("LoopCount++++", "setupGifLoopCount: $loopCount")
 
                     resource.setLoopCount(loopCount)
 
@@ -257,10 +393,11 @@ class MainActivity : AppCompatActivity() {
             .into(binding.iVGif)
 
     }
-    private fun setupAnimationGIF(loopCount: Int = 1) {
+    
+    private fun setupAnimationGIF() {
         val animation = AnimationDrawable()
-        val frameDuration = 50
-        val totalFrames = 203
+        val frameDuration = 25
+        
         // List files inside assets/airzoy
         val frameFiles = assets.list("airzoy") ?: emptyArray()
 
@@ -274,39 +411,18 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        /*for (i in 0..totalFrames) {
-            val name = "airzoy%03d".format(i)
-            val id = resources.getIdentifier(name, "drawable", packageName)
-            if (id != 0) animation.addFrame(resources.getDrawable(id, null), frameDuration)
-        }*/
 
-        binding.iVGif.setImageDrawable(animation)
-        animation.isOneShot = true
-
-        val totalDuration = animation.numberOfFrames * frameDuration
-        var loop = 0
-
-        binding.iVGif.post(object : Runnable {
-            override fun run() {
-                if (loop >= loopCount) return
-                loop++
-
-                animation.stop()
-                animation.selectDrawable(0)
-                animation.start()
-
-                binding.iVGif.postDelayed(this, totalDuration.toLong())
-            }
-        })
+        binding.iVGifFrames.setImageDrawable(animation)
+        animation.isOneShot = false
+        animation.start()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateNightModeStatus()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.stopAudio()
+    @Suppress("UNUSED")
+    @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
+    private fun getAmplitudeEvent(event: Events.RecordingAmplitude){
+        val amplitude = event.amplitude
+        if (status == RECORDING_RUNNING) {
+            binding.recorderVisualizer.update(amplitude)
+        }
     }
 }

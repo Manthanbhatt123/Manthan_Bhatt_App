@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.capermintpractical"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -37,6 +37,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        languageVersion = "1.9"
     }
     buildFeatures {
         viewBinding = true
@@ -61,4 +62,9 @@ dependencies {
 
     implementation(libs.nanohttpd)
 
+    //AudioRecorder
+    implementation(libs.audiorecordview)
+    implementation(libs.eventbus)
+//    implementation(libs.fossify.commons)
+//    implementation(libs.tandroidlame)
 }

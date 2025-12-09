@@ -217,10 +217,10 @@
                 android:id="@+id/bgView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="@id/iVGif"
-                app:layout_constraintTop_toTopOf="@id/iVGif"
-                app:layout_constraintBottom_toBottomOf="@id/iVGif"
-                app:layout_constraintEnd_toEndOf="@id/iVGif"
+                app:layout_constraintStart_toStartOf="@id/iVGifFrames"
+                app:layout_constraintTop_toTopOf="@id/iVGifFrames"
+                app:layout_constraintBottom_toBottomOf="@id/iVGifFrames"
+                app:layout_constraintEnd_toEndOf="@id/iVGifFrames"
                 android:background="@color/black"/>
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -231,6 +231,18 @@
                 app:layout_constraintTop_toBottomOf="@id/edtGifLoopCount"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/iVGifFrames"
+                tools:src="@tools:sample/backgrounds/scenic"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iVGifFrames"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_margin="25dp"
+                app:layout_constraintTop_toBottomOf="@id/iVGif"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/btnIntent"
                 tools:src="@tools:sample/backgrounds/scenic"/>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -239,11 +251,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/intent"
                 android:layout_margin="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/iVGif"
-                app:layout_constraintStart_toStartOf="@+id/iVGif"
-                app:layout_constraintEnd_toEndOf="@id/iVGif"/>
-
-
+                app:layout_constraintTop_toBottomOf="@+id/iVGifFrames"
+                app:layout_constraintStart_toStartOf="@+id/iVGifFrames"
+                app:layout_constraintEnd_toEndOf="@id/iVGifFrames"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnWebView"
@@ -255,7 +265,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/btnCamera"
                 app:layout_constraintEnd_toEndOf="parent"/>
-
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnCamera"
@@ -279,8 +288,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/ivMedia"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivMedia"
                 android:layout_width="wrap_content"
@@ -288,8 +295,25 @@
                 android:layout_margin="5dp"
                 app:layout_constraintTop_toBottomOf="@+id/btnCamera"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/recorder_visualizer"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.visualizer.amplitude.AudioRecordView
+                android:id="@+id/recorder_visualizer"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:chunkAlignTo="center"
+                app:chunkMaxHeight="200dp"
+                app:chunkMinHeight="2dp"
+                app:chunkRoundedCorners="true"
+                app:chunkSoftTransition="true"
+                app:chunkSpace="1dp"
+                app:chunkWidth="3dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivMedia" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

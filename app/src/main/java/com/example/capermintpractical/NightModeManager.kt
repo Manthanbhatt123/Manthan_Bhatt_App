@@ -14,7 +14,7 @@ data class NightModeSettings(
 )
 
 object NightModeManager {
-    private const val PREFS_NAME = "night_mode_prefs"
+    const val PREFS_NAME = "night_mode_prefs"
     private const val KEY_ENABLED = "night_mode_enabled"
     private const val KEY_START_HOUR = "start_hour"
     private const val KEY_START_MINUTE = "start_minute"

@@ -21,4 +21,10 @@
     <string name="webview">WebView</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="paused">Paused</string>
+    <string name="m4a">m4a</string>
+    <string name="ogg">ogg</string>
+    <string name="mp3">mp3</string>
+    <string name="recording_too_short">Recording too short</string>
+    <string name="recording_saved_successfully">Recording Save Successfully</string>
 </resources>

@@ -13,6 +13,10 @@ constraintlayout = "2.1.4"
 lifecycle = "2.6.2"
 coroutines = "1.7.3"
 nanohttpd = "2.3.1"
+audiorecordview = "1.0.5"
+eventbus = "3.3.1"
+commons = "5.7.1"
+tandroidlame = "1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,7 +34,14 @@ androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-
 kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 nanohttpd = { module = "org.nanohttpd:nanohttpd", version.ref = "nanohttpd" }
 
+audiorecordview = { module = "com.github.Armen101:AudioRecordView", version.ref = "audiorecordview" }
+eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
+fossify-commons = { module = "org.fossify:commons", version.ref = "commons" }
+#tandroidlame = { module = "com.github.naman14:TAndroidLame", version.ref = "tandroidlame" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
 
