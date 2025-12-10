@@ -1,4 +1,4 @@
-package com.example.capermintpractical.presentation.DynamicNanoHttpD
+package com.example.capermintpractical.presentation.dynamic_nano_http_d
 
 import android.os.Bundle
 import android.util.Log

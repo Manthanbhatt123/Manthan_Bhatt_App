@@ -1,11 +1,11 @@
-package org.fossify.voicerecorder.recorder
+/*
+package com.example.capermintpractical.recorder
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaRecorder
 import android.os.ParcelFileDescriptor
 import com.example.capermintpractical.presentation.utility.Config
-import com.example.capermintpractical.recorder.Recorder
 
 class MediaRecorderWrapper(val context: Context) : Recorder {
     val config = Config(context)
@@ -57,3 +57,4 @@ class MediaRecorderWrapper(val context: Context) : Recorder {
         return recorder.maxAmplitude
     }
 }
+*/

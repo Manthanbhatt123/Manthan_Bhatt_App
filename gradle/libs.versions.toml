@@ -1,5 +1,6 @@
 [versions]
 agp = "8.13.1"
+androidMapsUtils = "1.0.2"
 glide = "5.0.5"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
@@ -16,9 +17,13 @@ nanohttpd = "2.3.1"
 audiorecordview = "1.0.5"
 eventbus = "3.3.1"
 commons = "5.7.1"
+playServicesMaps = "17.0.0"
 tandroidlame = "1.1"
+navigationFragmentKtx = "2.9.6"
+navigationUiKtx = "2.9.6"
 
 [libraries]
+android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtils" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -37,6 +42,9 @@ nanohttpd = { module = "org.nanohttpd:nanohttpd", version.ref = "nanohttpd" }
 audiorecordview = { module = "com.github.Armen101:AudioRecordView", version.ref = "audiorecordview" }
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 fossify-commons = { module = "org.fossify:commons", version.ref = "commons" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 #tandroidlame = { module = "com.github.naman14:TAndroidLame", version.ref = "tandroidlame" }
 
 

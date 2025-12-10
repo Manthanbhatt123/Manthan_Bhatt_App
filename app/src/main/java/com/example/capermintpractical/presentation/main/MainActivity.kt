@@ -34,15 +34,18 @@ import com.example.capermintpractical.NightModeManager
 import com.example.capermintpractical.R
 import com.example.capermintpractical.databinding.ActivityMainBinding
 import com.example.capermintpractical.model.Events
-import com.example.capermintpractical.presentation.DynamicNanoHttpD.DynamicNanoHttpD
+import com.example.capermintpractical.presentation.bottom_navigation.BottomNavigation
+import com.example.capermintpractical.presentation.dynamic_nano_http_d.DynamicNanoHttpD
+import com.example.capermintpractical.presentation.heatmap.HeatMapActivity
 import com.example.capermintpractical.presentation.utility.AudioRecorderHelper
 import com.example.capermintpractical.presentation.utility.Config
 import com.example.capermintpractical.presentation.utility.RECORDING_PAUSED
 import com.example.capermintpractical.presentation.utility.RECORDING_RUNNING
 import com.example.capermintpractical.presentation.utility.RECORDING_STOPPED
 import com.example.capermintpractical.presentation.utility.setSafeOnClickListener
-import com.example.capermintpractical.services.RecorderService
+//import com.example.capermintpractical.services.RecorderService
 import org.greenrobot.eventbus.Subscribe
+import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
@@ -90,13 +93,13 @@ class MainActivity : AppCompatActivity() {
         setupObservers()
         setupListeners()
 //        NightModeManager.applyNightMode(this)
-//        setUpGIF(1)
+        setUpGIF(1)
         setupGifLoopCount()
 
         recorderHelper = AudioRecorderHelper(binding.recorderVisualizer)
         setupAnimationGIF()
         config = Config(this)
-        if (config.recordAfterLaunch && !RecorderService.isRunning) {
+        /*if (config.recordAfterLaunch && !RecorderService.isRunning) {
             Intent(this@MainActivity, RecorderService::class.java).apply {
                 try {
                     startService(this)
@@ -104,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     Log.e("RecorderService", "onCreate:${e.message.toString()}  \n${e.printStackTrace()}",e )
                 }
             }
-        }
+        }*/
     }
 
 
@@ -114,9 +117,9 @@ class MainActivity : AppCompatActivity() {
 
 
         setupColors()
-        if (!RecorderService.isRunning) {
+        /*if (!RecorderService.isRunning) {
             status = RECORDING_STOPPED
-        }
+        }*/
         binding.recorderVisualizer.recreate()
 
         refreshView()
@@ -251,6 +254,14 @@ class MainActivity : AppCompatActivity() {
                 stop()
             }
             true
+        }
+
+        binding.btnHeatMap.setSafeOnClickListener {
+            startActivity(Intent(this, HeatMapActivity::class.java))
+        }
+
+        binding.btnBottomNav.setSafeOnClickListener{
+            startActivity(Intent(this, BottomNavigation::class.java))
         }
     }
 

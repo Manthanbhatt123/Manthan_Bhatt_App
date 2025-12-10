@@ -1,4 +1,4 @@
-package org.fossify.voicerecorder.recorder
+package com.example.capermintpractical.recorder
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,6 @@ import android.os.ParcelFileDescriptor
 import android.util.Log
 import com.example.capermintpractical.presentation.utility.Config
 //import com.example.capermintpractical.presentation.utility.config
-import com.example.capermintpractical.recorder.Recorder
 //import com.naman14.androidlame.AndroidLame
 //import com.naman14.androidlame.LameBuilder
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs

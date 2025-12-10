@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    app:startDestination="@+id/fragment_A"
+    android:id="@+id/bottom_navigation">
+
+    <fragment
+        android:id="@+id/fragment_A"
+        android:name="com.example.capermintpractical.presentation.bottom_navigation.FragmentA"
+        android:label="@string/a"
+        tool:layout="@layout/fragment_a">
+        <action
+            android:id="@+id/action_fragment_A_to_fragment_B"
+            app:destination="@id/fragment_B" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_B"
+        android:name="com.example.capermintpractical.presentation.bottom_navigation.FragmentB"
+        android:label="@string/b"
+        tool:layout="@layout/fragment_b">
+        <action
+            android:id="@+id/action_fragment_B_to_fragment_A"
+            app:destination="@id/fragment_A" />
+    </fragment>
+
+
+</navigation>

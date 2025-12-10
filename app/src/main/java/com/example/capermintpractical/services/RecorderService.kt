@@ -8,11 +8,9 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
-import android.provider.DocumentsContract
 import androidx.core.app.NotificationCompat
 import com.example.capermintpractical.R
 import com.example.capermintpractical.model.Events
@@ -28,17 +26,13 @@ import com.example.capermintpractical.presentation.utility.RECORDING_STOPPED
 import com.example.capermintpractical.presentation.utility.STOP_AMPLITUDE_UPDATE
 import com.example.capermintpractical.presentation.utility.TOGGLE_PAUSE
 import com.example.capermintpractical.recorder.Recorder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.fossify.voicerecorder.recorder.MediaRecorderWrapper
-import org.fossify.voicerecorder.recorder.Mp3Recorder
+import com.example.capermintpractical.recorder.Mp3Recorder
 import org.greenrobot.eventbus.EventBus
-import java.io.File
 import java.util.Timer
 import java.util.TimerTask
-import kotlin.coroutines.coroutineContext
 
 class RecorderService : Service() {
 

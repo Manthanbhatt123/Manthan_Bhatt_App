@@ -4,10 +4,10 @@
 
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
-    <!-- For Android 10+ scoped storage handling is usually needed, but generic read is good -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" /> <!-- For Android 10+ scoped storage handling is usually needed, but generic read is good -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -21,8 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapermintPractical"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".presentation.bottom_navigation.BottomNavigation"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.heatmap.HeatMapActivity"
+            android:exported="false" />
 
-        <service
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="GMAPS_KEY_HERE" />
+
+        <!--<service
             android:name=".services.RecorderService"
             android:exported="false"
             android:foregroundServiceType="microphone">
@@ -31,10 +41,10 @@
                 <action android:name="org.fossify.voicerecorder.action.STOP_AMPLITUDE_UPDATE" />
                 <action android:name="org.fossify.voicerecorder.action.TOGGLE_PAUSE" />
             </intent-filter>
-        </service>
+        </service>-->
 
         <activity
-            android:name=".presentation.DynamicNanoHttpD.DynamicNanoHttpD"
+            android:name=".presentation.dynamic_nano_http_d.DynamicNanoHttpD"
             android:exported="false" />
         <activity
             android:name=".presentation.nanohttpd.NanoHttpDActivity"

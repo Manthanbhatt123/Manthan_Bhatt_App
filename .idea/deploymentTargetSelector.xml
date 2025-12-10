@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-12-05T11:23:45.890100Z">
+        <DropdownSelection timestamp="2025-12-09T10:13:27.046834Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/capermint/.android/avd/Resizable_Experimental.avd" />
